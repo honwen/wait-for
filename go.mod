@@ -1,12 +1,13 @@
-module github.com/dm03514/wait-for
+module github.com/honwen/wait-for
+
+go 1.16
 
 require (
-	github.com/go-redis/redis v6.14.1+incompatible
-	github.com/go-sql-driver/mysql v1.4.0
-	github.com/lib/pq v1.0.0
-	github.com/sirupsen/logrus v1.0.6
-	github.com/urfave/cli v1.20.0
-	golang.org/x/crypto v0.0.0-20180820150726-614d502a4dac // indirect
-	golang.org/x/sys v0.0.0-20180824143301-4910a1d54f87 // indirect
-	google.golang.org/appengine v1.1.0 // indirect
+	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/go-sql-driver/mysql v1.6.0
+	github.com/lib/pq v1.10.4
+	github.com/onsi/ginkgo v1.16.5 // indirect
+	github.com/onsi/gomega v1.17.0 // indirect
+	github.com/sirupsen/logrus v1.8.1
+	github.com/urfave/cli v1.22.5
 )

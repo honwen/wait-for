@@ -4,7 +4,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/dm03514/wait-for/cmd"
+	"github.com/honwen/wait-for/cmd"
 	log "github.com/sirupsen/logrus"
 	"github.com/urfave/cli"
 )

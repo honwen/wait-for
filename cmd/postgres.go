@@ -1,8 +1,8 @@
 package cmd
 
 import (
-	"github.com/dm03514/wait-for/poller"
-	"github.com/dm03514/wait-for/poller/postgres"
+	"github.com/honwen/wait-for/poller"
+	"github.com/honwen/wait-for/poller/postgres"
 	"github.com/urfave/cli"
 )
 

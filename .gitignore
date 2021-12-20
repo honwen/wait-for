@@ -1,2 +1,5 @@
 bin/
+vendor/
 coverage.out
+
+wait-for
