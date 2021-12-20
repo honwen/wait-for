@@ -1,11 +1,43 @@
-BIN_DIR=bin/
-BIN_NAME=wait-for
-PKGS = $(shell go list ./... | grep -v /vendor/)
+NAME=wait-for
+BASE_BUILDDIR=build
+BUILDNAME=$(GOOS)-$(GOARCH)$(GOARM)
+BUILDDIR=$(BASE_BUILDDIR)/$(BUILDNAME)
+VERSION?=dev
 
-build:
-	GO111MODULE=on go build -o $(BIN_DIR)$(BIN_NAME)
+ifeq ($(GOOS),windows)
+  ext=.exe
+  archiveCmd=zip -9 -r $(NAME)-$(BUILDNAME)-$(VERSION).zip $(BUILDNAME)
+else
+  ext=
+  archiveCmd=tar czpvf $(NAME)-$(BUILDNAME)-$(VERSION).tar.gz $(BUILDNAME)
+endif
 
-test-unit:
-	go test $(PKGS) -v -coverprofile=coverage.out -covermode=count
+.PHONY: default
+default: build
 
-.PHONY: test-unit
+build: clean test
+	go build -mod=vendor
+
+release: check-env-release
+	mkdir -p $(BUILDDIR)
+	cp LICENSE $(BUILDDIR)/
+	cp README.md $(BUILDDIR)/
+	CGO_ENABLED=0 GOOS=$(GOOS) GOARCH=$(GOARCH) go build -mod=vendor -ldflags "-s -w -X main.Version=$(VERSION)" -o $(BUILDDIR)/$(NAME)$(ext)
+	cd $(BASE_BUILDDIR) ; $(archiveCmd)
+
+test:
+	go test -race -v -bench=. ./...
+
+clean:
+	go clean
+	rm -rf $(BASE_BUILDDIR)
+
+check-env-release:
+	@ if [ "$(GOOS)" = "" ]; then \
+		echo "Environment variable GOOS not set"; \
+		exit 1; \
+	fi
+	@ if [ "$(GOARCH)" = "" ]; then \
+		echo "Environment variable GOOS not set"; \
+		exit 1; \
+	fi
