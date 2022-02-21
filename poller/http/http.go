@@ -42,10 +42,12 @@ func (h HTTP) CheckReady() (ready bool, err error) {
 	}
 	resp, err := h.client.Do(req)
 
-	log.WithFields(log.Fields{
-		"module":      "poller.HTTP",
-		"status_code": resp.StatusCode,
-	}).Debug("http_response")
+	if resp != nil {
+		log.WithFields(log.Fields{
+			"module":      "poller.HTTP",
+			"status_code": resp.StatusCode,
+		}).Debug("http_response")
+	}
 
 	if err != nil {
 		return false, err

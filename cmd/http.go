@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"strings"
+
 	"github.com/honwen/wait-for/poller"
 	"github.com/honwen/wait-for/poller/http"
 	"github.com/urfave/cli"
@@ -9,11 +11,15 @@ import (
 var HTTPCommand = cli.Command{
 	Name: "http",
 	Action: func(c *cli.Context) error {
-		h, err := http.New(
-			c.String("method"),
-			c.String("url"),
-			c.String("body"),
-		)
+		url := c.String("url")
+		if len(url) < 1 {
+			cli.ShowAppHelp(c)
+			cli.OsExiter(1)
+		}
+		if !(strings.HasPrefix(url, `https://`) || strings.HasPrefix(url, `http://`)) {
+			url = `http://` + url
+		}
+		h, err := http.New(c.String("method"), url, c.String("body"))
 		if err != nil {
 			return err
 		}
